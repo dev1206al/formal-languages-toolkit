@@ -1,0 +1,5 @@
+E -> TQ
+Q -> +TQ | xTQ | ε
+T -> FR
+R -> *FR| /FR | ε
+F -> (E) | i

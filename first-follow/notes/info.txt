@@ -1,0 +1,132 @@
+1.- El codigo calcula el conjunto FIRST de cada simbolo no terminal de manera recursiva, analizando cada produccion.
+2.- El conjunto FOLLOW se calcula encontrando donde aparece un simbolo no terminal a la derecha de las producciones y propagando terminales o ε cuando es necesario.
+3.- La propagacion de FOLLOW incluye la posibilidad de que ε afecte a las derivaciones, agregando FOLLOW del
+simbolo izquierdo cuando es necesario.
+
+----------------------------------------------------------------------------------------------------------------
+
+First(x): Es el conjunto de todos los terminales que pueden aparecer al principio de alguna
+cadena derivada desde x. Si X puede derivar a ε (cadena vacia), entonces ε tambien pertenece a First(x).
+
+Follow(x): Es el conjunto de todos los terminales que pueden aparecer inmediatamente despues de (x) en alguna
+derivacion. Si x puede ser el ultimo simbolo de una produccion, entonces Follow(x) incluye el simbolo de fin
+de entrada $.
+
+----------------------------------------------------------------------------------------------------------------
+Se abre el archivo grammarx.txt que contiene la gramatica en formato de producciones. Las producciones se
+almacenaran en un diccionario "produccions", donde cada clave representa un no terminal y los valores seran 
+listas de producciones asociadas a ese no terminal.
+
+El codigo recorre cada linea del archivo de gramatica y usando re.split para dividir la linea de producciones
+en sus componentes usando ->, saltos de linea o espacios.
+
+Ejemplo:
+    S -> AB
+    A -> a 
+Se divide en:
+    ['S', 'A', 'B']
+
+Seguido de esto construye el diccionario de producciones 
+    left_prod = m.pop(0)
+    productions[left_prod] = right_prod
+Donde left_prod es el simbolo del lado izquierdo de la produccion (por ejemplo, S)
+y right_prod es una lista de listas, donde cada lista representa una de las posibles derivaciones del no terminal.
+
+Ejemplo:
+produccions = {
+    'S': [['A', 'B']],
+    'A': [['a']],
+    'B': [['b']]
+}
+
+----------------------------------------------------------------------------------------------------------------
+Calculo del conjunto First
+    for s in produccions.keys():
+        first[s] = cal_first(s, productions)
+
+Para cada simbolo no terminal s en las producciones, se llama a la funcion cal_first para calcular el conjunto
+FIRST de s.
+
+La funcion cal_first 
+    def cal_first(s, productions):
+        first = set()
+first es el conjunto donde se almacenara el resultado
+Se recorre cada produccion de s para calcular FIRST recursivamente
+
+Calculo de First paso a paso:
+    for i in range(len(productions[s])):
+      for j in range(len(productions[s][i])):
+          c = productions[s][i][j]
+
+Se recorren todas las producciones de s y cada simbolo c dentro de esas producciones
+
+Caso1:
+if c.isupper():
+    f = cal_first(c, productions)
+ Si c es un no terminal (Mayuscula), se llama recursivamente a cal_first(c)
+
+Caso2: 
+else:
+    first.add(c)
+    break
+Si c es un terminal (minuscula o simbolo), se agrega directamente a first y se detiene la busqueda.
+
+Caso3:
+if 'ε' in f:
+    f.remove('ε')
+    first.update(f)
+Si ε esta en FIRST(c), se elimina y se continua evaluando el siguiente simbolo de la produccion.
+Si todos los simbolos pueden derivar ε, entonces ε se agrega a FIRST(s).
+
+Por ultimo se procede a imprimir FIRST
+print("*****FIRST*****")
+for lhs, rhs in first.items():
+    print(lhs, ":" , rhs)
+
+---------------------------------------------------------------------------------------------------------------
+Calculo de Follow
+def cal_follow(s, productions, first):
+    follow = set()
+    if s == list(productions.keys())[0]:
+        follow.add('$')
+
+Si s es el simbolo inicial, se agrega el simbolo $ (fin de entrada) a FOLLOW(s)
+
+for i in productions:
+    for j in range(len(productions[i])):
+        if s in productions[i][j]:
+            idx = productions[i][j].index(s)
+
+Se recorre cada produccion buscando el simbolo s dentro de otras producciones (situacion donde s aparece a la
+derecha de ->)
+
+Caso1: Simbolo final
+if idx == len(productions[i][j]) - 1:
+    f = cal_follow(i, productions, first)
+    follow.update(f)
+
+Si s esta al final de la produccion (A -> αB), se agrega FOLLOW(A) a FOLLOW(B).
+
+Caso2: Simbolos a la derecha de S
+else:
+    while idx != len(productions[i][j]) - 1:
+        idx += 1
+        if not productions[i][j][idx].isupper():
+            follow.add(productions[i][j][idx])
+            break
+        else:
+            f = cal_first(productions[i][j][idx], productions)
+            follow.update(f - {'ε'})
+            if 'ε' not in f:
+                break
+
+Si s tiene simbolos a la derecha (A -> αBγ), se calcula FIRST(y) y se añade a FOLLOW(B).
+Si y puede derivar a ε, se agrega FOLLOW(A)
+
+Seguido de esto se imprime FOLLOW
+
+print("*****FOLLOW*****")
+for lhs, rhs in follow.items():
+    print(lhs, ":" , rhs)
+
+

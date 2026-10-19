@@ -1,0 +1,94 @@
+Gramatica de entrada
+S -> AB
+A -> Ca | ε
+B -> cX
+X -> aACX | ε
+C -> b | ε
+
+Calculo del conjunto FIRST
+1. Simbolo S (Produccion S -> AB):
+    - s depende de FIRST(A) y FIRST(B)
+    - Se calula primero FIRST(A)
+2. Simbolo A (Produccion -> Ca | ε)
+    - Para A -> Ca
+        - FIRST(c) se calcula
+        - C -> b | ε, por lo que FIRST(C) = {b, ε}
+        - Como ε esta en FIRST(C), se agrega a de Ca.
+        - Resultado parcial FIRST(A) = {b,a}
+    - Para A -> ε
+        - Se agrega directamente ε
+        - Resultado final: FIRST(A) = {b, a, ε}
+3. Simbolo B (Produccion cX)
+    - c es terminal, por lo que
+        FIRST(B) = {c}
+4. Simbolo X (Produccion: X -> aACX | ε)
+    - Para X -> aACX:
+        - a es terminal, por lo que:
+        - FIRST(X) = {a}
+    - Para x -> ε
+        - Se agrega ε directamente
+        - Resultaado final: FIRST(X) = {a, ε}
+5. Simbolo C (Produccion: C -> b | ε):
+    - C deriva b o ε, por lo que 
+        - FIRST(C) = {b, ε}
+
+Resultados del conjunto FIRST:
+S : {'b', 'a', 'c'}
+A : {'b', 'a', 'ε'}
+B : {'c'}
+X : {'ε', 'a'}
+C : {'b', 'ε'}
+
+S -> FIRST(A) = {b, a, ε} y FIRST(B) = {c}
+Como ε esta en FIRST (A), FIRST(S) incluye FIRST(B) = {c}
+Resultado final: FIRST(S) = {b, a, c}.
+
+----------------------------------------------------------------------------------------------------------------
+Conjunto FOLLOW
+1. Simbolo S:
+    - S es el simbolo inicial.
+    - Se agrega $( fin de entrada ) a FOLLOW(S):
+2. Simbolo A (Produccion S -> AB)
+    - A esta seguido por B en la produccion
+    - Se agrega FIRST(B) (sin ε) a FOLLOW(A).
+    - FIRST(B) = {c}, por lo que FOLLOW(A) = {c}
+    - Ademas FOLLOW(s) se propaga a A ya que B puede derivar ε (X -> ε en B -> cX)
+        - FOLLOW(A) = {c, $}
+3. Simbolo B
+    - FOLLOW(B) hereda FOLLOW(S)
+        - FOLLOW(B) ={$}
+4. Simbolo X (Produccion: B -> cX)
+    - FOLLOW(X) hereda FOLLOW(B).
+        FOLLOW(X) = {$}
+5. Simbolo A (Produccion: X -> aACX):
+    - A esta seguido por C en X -> aACX
+    - Se agrega FIRST(C) = {b, ε} a FOLLOW(A).
+    - Como ε esta en FIRST(C), se agrega FOLLOW(X) a FOLLOW(A)
+        - FOLLOW(A) = {c, b, a, $}
+6. Simbolo C (Produccion A -> Ca)
+    - C esta seguido por a en A -> Ca, por lo que   
+        - FOLLOW(C) = {a}
+    - Ademas FOLLOW(A) se propaga a C ya que A -> ε es posible
+        - FOLLOW(C) = {a, $}
+
+Resultados del conjunto FOLLOW
+S : {'$'}
+A : {'b', 'c', '$', 'a'}
+B : {'$'}
+X : {'$'}
+C : {'a', '$'}
+
+- FOLLOW(A) = {b, c, $, a}
+    - A aparece en S -> AB, lo que implica que FOLLOW(A) hereda FIRST(B) = {c}
+    - Ademas, FOLLOW(S) = {$} se propaga a A porque B puede derivar a ε ( a traves de X)
+    - En X -> aACX, A esta seguido por C. Dado que C -> ε es posible, FOLLOW(X) = {$} tambien se agrega a FOLLOW(A)
+
+- FOLLOW(C) = {a, $}
+    - C aparece en A -> Ca, por lo que FOLLOW(C) incluye el terminal a.
+    - Ademas, A -> ε implica que FOLLOW(A) se propaga a C, lo que añade $ a FOLLOW(C).
+
+----------------------------------------------------------------------------------------------------------------
+1. El calculo FIRST es directo y sigue las reglas de propagacion de terminales y anulabilidad ε
+2. El calculo de FOLLOw propaga los terminales que siguen a un no terminal y maneja correctamente las derivaciones
+    nulas ε, asegurando que los conjuntos FOLLOW se hereden adecuadamente.
+3. El simbolode fin de entrada $ se agrega solo al simbolo inciial y se propaga segun las reglas de la gramatica.
