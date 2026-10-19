@@ -1,33 +1,33 @@
-# Formal Languages Toolkit
+# Toolkit de Lenguajes Formales
 
-A collection of Python implementations for core topics in formal languages and compiler construction: finite automata, token recognition, FIRST/FOLLOW sets, and shift-reduce parsing.
+Colección de implementaciones en Python sobre conceptos fundamentales de lenguajes formales y construcción de compiladores: autómatas finitos, reconocimiento de tokens, conjuntos FIRST/FOLLOW y análisis sintáctico shift-reduce.
 
-This repository consolidates four academic projects into a single, organized toolkit. Each module can be executed independently and includes sample inputs.
+Este repositorio consolida cuatro proyectos académicos en un solo toolkit organizado. Cada módulo se puede ejecutar de manera independiente e incluye entradas de ejemplo.
 
-## Included modules
+## Módulos incluidos
 
-| Module | What it demonstrates | Entry point |
+| Módulo | Concepto demostrado | Punto de entrada |
 | --- | --- | --- |
-| [NFA to DFA conversion](./automata-conversion/) | Epsilon closure and subset construction | `automata-conversion/main.py` |
-| [Token recognition](./token-recognition/) | Finite-automaton recognition of selected C keywords and operators | `token-recognition/main.py` |
-| [FIRST and FOLLOW](./first-follow/) | FIRST/FOLLOW calculation for simple context-free grammars | `first-follow/first_and_follow.py` |
-| [Shift-reduce parser](./shift-reduce-parser/) | Stack-based shift and reduce operations using grammar files | `shift-reduce-parser/sr.py` |
+| [Conversión de AFN a AFD](./automata-conversion/) | Clausura-épsilon y construcción de subconjuntos | `automata-conversion/main.py` |
+| [Reconocimiento de tokens](./token-recognition/) | Reconocimiento mediante autómatas de palabras reservadas y operadores seleccionados de C | `token-recognition/main.py` |
+| [Conjuntos FIRST y FOLLOW](./first-follow/) | Cálculo de FIRST/FOLLOW para gramáticas simples independientes del contexto | `first-follow/first_and_follow.py` |
+| [Parser shift-reduce](./shift-reduce-parser/) | Operaciones de desplazamiento y reducción basadas en una pila y archivos de gramática | `shift-reduce-parser/sr.py` |
 
-## Requirements
+## Requisitos
 
-- Python 3.8 or newer
-- No third-party dependencies
+- Python 3.8 o posterior.
+- No requiere dependencias externas.
 
-## Quick start
+## Inicio rápido
 
-Clone the repository:
+Clona el repositorio:
 
 ```bash
 git clone https://github.com/dev1206al/formal-languages-toolkit.git
 cd formal-languages-toolkit
 ```
 
-Run any module from the repository root:
+Ejecuta cualquiera de los módulos desde la raíz del repositorio:
 
 ```bash
 python3 automata-conversion/main.py
@@ -36,43 +36,43 @@ python3 first-follow/first_and_follow.py
 python3 shift-reduce-parser/sr.py
 ```
 
-The shift-reduce parser asks for a grammar file. For example:
+El parser shift-reduce solicitará la ruta de un archivo de gramática. Por ejemplo:
 
 ```text
 shift-reduce-parser/examples/gram1.txt
 ```
 
-## Module details
+## Descripción de los módulos
 
-### 1. NFA to DFA conversion
+### 1. Conversión de AFN a AFD
 
-Implements the subset-construction algorithm, including epsilon closures, to transform a nondeterministic finite automaton into a deterministic one. The included examples print transition tables, initial states, final states, and sink-state transitions.
+Implementa el algoritmo de construcción de subconjuntos, incluyendo clausuras-épsilon, para transformar un autómata finito no determinista en uno determinista. Los ejemplos incluidos muestran tablas de transición, estados iniciales, estados finales y transiciones hacia estados sumidero.
 
-### 2. Token recognition
+### 2. Reconocimiento de tokens
 
-Builds a finite automaton that recognizes a small set of C-language tokens:
+Construye un autómata finito que reconoce un conjunto reducido de tokens del lenguaje C:
 
-- Keywords: `if`, `int`, `else`, `while`
-- Operators or expressions: `i`, `i++`
+- Palabras reservadas: `if`, `int`, `else`, `while`.
+- Operadores o expresiones: `i`, `i++`.
 
-The sample runner evaluates valid and invalid strings and reports whether each one is accepted.
+El programa de ejemplo evalúa cadenas válidas e inválidas e indica si cada una fue aceptada.
 
-### 3. FIRST and FOLLOW sets
+### 3. Conjuntos FIRST y FOLLOW
 
-Loads a context-free grammar from a text file and calculates FIRST and FOLLOW sets for its non-terminal symbols. Ten sample grammars are available under [`first-follow/examples`](./first-follow/examples/).
+Carga una gramática independiente del contexto desde un archivo de texto y calcula los conjuntos FIRST y FOLLOW de sus símbolos no terminales. Hay diez gramáticas disponibles en [`first-follow/examples`](./first-follow/examples/).
 
-By default, the program uses `grammar5.txt`. A different example can be selected in `first_and_follow.py`.
+De manera predeterminada, el programa utiliza `grammar5.txt`. Se puede seleccionar otro ejemplo desde `first_and_follow.py`.
 
-### 4. Shift-reduce parser
+### 4. Parser shift-reduce
 
-Demonstrates bottom-up parsing through a stack and two central operations:
+Demuestra el análisis sintáctico ascendente mediante una pila y dos operaciones centrales:
 
-- **Shift:** moves the next input token to the stack.
-- **Reduce:** replaces a matching right-hand side with its production's left-hand side.
+- **Shift (desplazamiento):** mueve el siguiente token de la entrada hacia la pila.
+- **Reduce (reducción):** sustituye un lado derecho coincidente por el lado izquierdo de su producción.
 
-Six sample grammars are included under [`shift-reduce-parser/examples`](./shift-reduce-parser/examples/).
+Se incluyen seis gramáticas de ejemplo en [`shift-reduce-parser/examples`](./shift-reduce-parser/examples/).
 
-## Repository structure
+## Estructura del repositorio
 
 ```text
 formal-languages-toolkit/
@@ -93,15 +93,14 @@ formal-languages-toolkit/
 └── README.md
 ```
 
-## Scope
+## Alcance
 
-These implementations are educational demonstrations of the underlying algorithms. They are intentionally compact and are not intended to replace production lexer or parser generators.
+Estas implementaciones son demostraciones educativas de los algoritmos correspondientes. Se mantienen deliberadamente compactas y no pretenden sustituir generadores de analizadores léxicos o sintácticos para producción.
 
-## Author
+## Autor
 
 **Luis Enrique Alvarez Segura**  
-Computer Engineering graduate, Universidad Autónoma Metropolitana (UAM)
+Egresado de Ingeniería en Computación, Universidad Autónoma Metropolitana (UAM)
 
 - [GitHub](https://github.com/dev1206al)
 - [LinkedIn](https://www.linkedin.com/in/luis-enrique-alvarez-segura/)
-
